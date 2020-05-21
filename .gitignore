@@ -1,10 +1,7 @@
-Procfile
 __pycache__/
 dane
 get-pip.py
 lastGrade.txt
-requirements.txt
-runtime.txt
 skrypt.bat
 testy.py
 testyApi.py
