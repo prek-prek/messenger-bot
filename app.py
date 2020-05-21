@@ -14,8 +14,9 @@ VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
 bot = Bot(ACCESS_TOKEN)
 
 mydb = mysql.connector.connect(
-    host="localhost",
+    host="37.59.165.37",
     user="root",
+    password= os.environ['DATABASE_PASSWORD']
     database="users"
 )
 
