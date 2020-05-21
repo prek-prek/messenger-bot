@@ -1,1 +1,1 @@
-python msbot.py
+web: gunicorn app:app
