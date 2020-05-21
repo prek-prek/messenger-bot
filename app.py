@@ -16,7 +16,7 @@ bot = Bot(ACCESS_TOKEN)
 mydb = mysql.connector.connect(
     host="37.59.165.37",
     user="root",
-    password= os.environ['DATABASE_PASSWORD']
+    password= os.environ['DATABASE_PASSWORD'],
     database="users"
 )
 
