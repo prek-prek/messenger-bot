@@ -6,17 +6,15 @@ from pymessenger.bot import Bot
 from datetime import date, timedelta, datetime
 import mysql.connector
 import json
-import os
 
 app = Flask(__name__)
 ACCESS_TOKEN = 'EAADTxfZBqeScBAIM3ZBrHE3czy0MthGBje7bArvwHIEkZBDvvwe1IIBXoe8HMha0bC0KqUdM5YZCcRjhtU5zLEWT1gsRGTcfgriI4bpGPiGvZAkzG9RpvHxx2E8KNLbVJjanH5Yp85sofahFZAYIY56CVzc2MAUhMnZCvZCyt0bI51hdw4ptsKYH'
-VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
+VERIFY_TOKEN = 'TESTTOKEN'
 bot = Bot(ACCESS_TOKEN)
 
 mydb = mysql.connector.connect(
-    host="37.59.165.37",
+    host="localhost",
     user="root",
-    password= os.environ['DATABASE_PASSWORD'],
     database="users"
 )
 
@@ -300,17 +298,21 @@ def receive_message():
                         cert = ""
                         try:
                             cert = apiVulcan.logInVulcan(str(splitM[0]),str(splitM[1]),str(splitM[2]))
-                        except:
+                        except Exception as e:
+                            print(e)
                             send_message(recipient_id, "Logowanie się nie powiodło.")
                         if(cert!=""):
-                            string1 = str(cert)
-                            clientCertificate = string1
-                            clientCertificate = clientCertificate.replace("'",'"')
-                            clientCertificate = json.loads(clientCertificate)
-                            insert="""INSERT INTO `users`(`recipient_id`,`certificate`,`last_gradeID`,`last_gradeDATA`) VALUES (%s,%s,%s,%s)"""
-                            mycursor.execute(insert, (recipient_id,string1,apiVulcan.getLastGrade(clientCertificate)[0],apiVulcan.getLastGrade(clientCertificate)[1],))
-                            mydb.commit()
-                            send_message(recipient_id, "Zalogowano pomyślnie")
+                            try:
+                                string1 = str(cert)
+                                clientCertificate = string1
+                                clientCertificate = clientCertificate.replace("'",'"')
+                                clientCertificate = json.loads(clientCertificate)
+                                insert="""INSERT INTO `users`(`recipient_id`,`certificate`,`last_gradeID`,`last_gradeDATA`) VALUES (%s,%s,%s,%s)"""
+                                mycursor.execute(insert, (recipient_id,string1,apiVulcan.getLastGrade(clientCertificate)[0],apiVulcan.getLastGrade(clientCertificate)[1],))
+                                mydb.commit()
+                                send_message(recipient_id, "Zalogowano pomyślnie")
+                            except Exception as e:
+                                print(e)
 
     return "Message Processed"
 
