@@ -66,9 +66,14 @@ def receive_message():
                         clientCertificate = clientCertificate[:-1]
                         clientCertificate = clientCertificate[2:]
                         librus = Librus()
-                        #else:
                         try:
-                            send_message(recipient_id, librus.getHomeWork(clientCertificate))
+                            #WIADOMOSC NIE TEKSTOWA
+                            if message['message'].get('attachments'):
+                                send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
+                            elif(message['message'].get('text').lower().split()[0] == "sprawdziany"):
+                                send_message(recipient_id, librus.getHomeWork(clientCertificate))
+                            else:
+                                send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
                         except Exception as e:
                             mycursor.execute("DELETE FROM `users` WHERE `users`.`recipient_id` = "+recipient_id)
                             mydb.commit()
