@@ -50,13 +50,6 @@ def receive_message():
                 #SPRAWDZANIE LOGOWANIA
                 if(str(recipient_id) in usersL):
                     mycursor.execute("SELECT `diary` FROM `users` WHERE recipient_id="+recipient_id)
-                    """clientCertificate = mycursor.fetchall()
-                    clientCertificateL = []
-                    for index in range(len(clientCertificate)):
-                        clientCertificateL.append(str(clientCertificate[index][0]))
-                    clientCertificate = clientCertificateL[0]
-                    clientCertificate = clientCertificate[:-1]
-                    clientCertificate = clientCertificate[2:]"""
                     diary = mycursor.fetchall()
                     diaryL = []
                     for index in range(len(diary)):
@@ -83,6 +76,14 @@ def receive_message():
                             print(e)
                     #VULCAN
                     elif(diary=="v"):
+                        mycursor.execute("SELECT `certificate` FROM `users` WHERE recipient_id="+recipient_id)
+                        clientCertificate = mycursor.fetchall()
+                        clientCertificateL = []
+                        for index in range(len(clientCertificate)):
+                            clientCertificateL.append(str(clientCertificate[index][0]))
+                        clientCertificate = clientCertificateL[0]
+                        clientCertificate = clientCertificate[:-1]
+                        clientCertificate = clientCertificate[2:]
                         clientCertificate = clientCertificate.replace("'",'"')
                         clientCertificate = json.loads(clientCertificate)
                         #WIADOMOSC NIE TEKSTOWA
