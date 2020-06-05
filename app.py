@@ -70,8 +70,85 @@ def receive_message():
                             #WIADOMOSC NIE TEKSTOWA
                             if message['message'].get('attachments'):
                                 send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
+                            #SPRAWDZIANY
                             elif(message['message'].get('text').lower().split()[0] == "sprawdziany"):
-                                send_message(recipient_id, librus.getHomeWork(clientCertificate))
+                                #send_message(recipient_id, librus.getHomeWork(clientCertificate))
+                                try:
+                                    if("jutro" in message['message'].get('text').lower().split()):
+                                        exams = librus.getHomeWork(datetime.strptime(str(date.today()), '%Y-%m-%d') + timedelta(days=1),clientCertificate)
+                                        if(exams==""):
+                                            send_message(recipient_id, "Brak sprawdzianów na jutro! 🎉")
+                                        else:
+                                            send_message(recipient_id, exams)
+                                    elif("wczoraj" in message['message'].get('text').lower().split()):
+                                        exams = librus.getHomeWork(datetime.strptime(str(date.today()), '%Y-%m-%d') - timedelta(days=1),clientCertificate)
+                                        if(exams==""):
+                                            send_message(recipient_id, "Brak sprawdzianów wczoraj! 🎉")
+                                        else:
+                                            send_message(recipient_id, exams)
+                                    elif("dzisiaj" in message['message'].get('text').lower().split()): #or (len(message['message'].get('text').lower().split())==2):
+                                        exams = librus.getHomeWork(datetime.strptime(str(date.today()), '%Y-%m-%d'),clientCertificate)
+                                        if(exams==""):
+                                            send_message(recipient_id, "Brak sprawdzianów dzisiaj! 🎉")
+                                        else:
+                                            send_message(recipient_id, exams)
+                                    else:
+                                        if(len(message['message'].get('text').lower().split())==2):
+                                            if(librus.getHomeWork(datetime.strptime("2020-"+ message['message'].get('text').lower().split()[1], '%Y-%m-%d'),clientCertificate)==""):
+                                                send_message(recipient_id, "Brak sprawdzianów w dniu 2020-"+message['message'].get('text').lower().split()[1]+"! 🎉")
+                                            else:
+                                                send_message(recipient_id, librus.getHomeWork(datetime.strptime("2020-"+ message['message'].get('text').lower().split()[1], '%Y-%m-%d'),clientCertificate))
+                                        else:
+                                            exams = librus.getHomeWork(datetime.strptime(str(date.today()), '%Y-%m-%d'),clientCertificate)
+                                            if(exams==""):
+                                                send_message(recipient_id,"Brak sprawdzianów dzisiaj! 🎉")
+                                            else:
+                                                send_message(recipient_id, exams)
+                                except Exception as e:
+                                    print(e)
+                                    send_message(recipient_id, "Nieprawidłowy format daty! 🧐\nPoprawny format: miesiac-dzien")
+                            #SZCZESLIWY NUMEREK
+                            elif(message['message'].get('text').lower() == "szczesliwy") or (message['message'].get('text').lower() == "szczęśliwy") or (message['message'].get('text').lower() == "szczesliwy numerek") or (message['message'].get('text').lower() == "szczęśliwy numerek"):
+                                try:
+                                    Number = librus.get_lucky_number(clientCertificate)
+                                    send_message(recipient_id, str(Number))
+                                except Exception as e:
+                                    print(e)
+                                    send_message(recipient_id, "Wystąpił błąd przy pobieraniu szczęśliwego numerka.")
+                            #ŚREDNIA
+                            elif (message['message'].get('text').lower().split()[0] == "srednia") or (message['message'].get('text').lower().split()[0] == "średnia"):
+                                try:
+                                    if(message['message'].get('text').lower().split()[1]=="niemiecki"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Język niemiecki")))
+                                    elif(message['message'].get('text').lower().split()[1]=="angielski"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Język angielski")))
+                                    elif(message['message'].get('text').lower().split()[1]=="polski"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Język polski")))
+                                    elif(message['message'].get('text').lower().split()[1]=="wos"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Wiedza o społeczeństwie")))
+                                    elif(message['message'].get('text').lower().split()[1]=="edb"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Edukacja dla bezpieczeństwa")))
+                                    elif(message['message'].get('text').lower().split()[1]=="wok"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Wiedza o kulturze")))
+                                    elif(message['message'].get('text').lower().split()[1]=="pp") or (message['message'].get('text').lower().split()[1]=="przedsiebiorczosc"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Podstawy przedsiębiorczości")))
+                                    elif(message['message'].get('text').lower().split()[1]=="wdż"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Wychowanie do życia w rodzinie")))
+                                    elif(message['message'].get('text').lower().split()[1]=="wf"):
+                                        send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,"Wychowanie fizyczne")))
+                                    elif(len(message['message'].get('text').lower().split())==1):
+                                        send_message(recipient_id,"Błędne użycie komendy.\nPoprawne uzycie:\nśrednia (nazwa przedmiotu)")
+                                    else:
+                                        if(len(message['message'].get('text').lower().split())==2):
+                                            send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,message['message'].get('text').split()[1].capitalize())))
+                                        elif(len(message['message'].get('text').lower().split())>2):
+                                            mess=str(message['message'].get('text').lower())
+                                            mess = mess[8:]
+                                            send_message(recipient_id, str(librus.getGradeAvg(clientCertificate,mess.capitalize())))
+                                except Exception as e:
+                                    print(e)
+                                    send_message(recipient_id,"Błędna nazwa przedmiotu lub brak ocen")
+                            #ZŁA KOMENDA
                             else:
                                 send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
                         except Exception as e:
@@ -181,6 +258,8 @@ def receive_message():
                                     send_message(recipient_id, str(apiVulcan.getAverage(clientCertificate,"język polski")))
                                 elif(message['message'].get('text').lower().split()[1]=="wos"):
                                     send_message(recipient_id, str(apiVulcan.getAverage(clientCertificate,"wiedza o społeczeństwie")))
+                                elif(message['message'].get('text').lower().split()[1]=="edb"):
+                                    send_message(recipient_id, str(apiVulcan.getAverage(clientCertificate,"edukacja dla bezpieczeństwa")))
                                 elif(message['message'].get('text').lower().split()[1]=="wok"):
                                     send_message(recipient_id, str(apiVulcan.getAverage(clientCertificate,"wiedza o kulturze")))
                                 elif(message['message'].get('text').lower().split()[1]=="pp") or (message['message'].get('text').lower().split()[1]=="przedsiebiorczosc"):
