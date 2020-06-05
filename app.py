@@ -72,7 +72,6 @@ def receive_message():
                                 send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
                             #SPRAWDZIANY
                             elif(message['message'].get('text').lower().split()[0] == "sprawdziany"):
-                                #send_message(recipient_id, librus.getHomeWork(clientCertificate))
                                 try:
                                     if("jutro" in message['message'].get('text').lower().split()):
                                         exams = librus.getHomeWork(datetime.strptime(str(date.today()), '%Y-%m-%d') + timedelta(days=1),clientCertificate)
@@ -115,6 +114,14 @@ def receive_message():
                                 except Exception as e:
                                     print(e)
                                     send_message(recipient_id, "Wystąpił błąd przy pobieraniu szczęśliwego numerka.")
+                            #DNI WOLNE
+                            elif(message['message'].get('text').lower() == "dni wolne"):
+                                ReturnString = ""
+                                FreeDays = librus.get_school_free_days(clientCertificate)
+                                for x in range(len(FreeDays)):
+                                    if(x%3==0):
+                                        ReturnString += "\n📋 " + FreeDays[x] + "\n" + FreeDays[x+1] + "➡️" + FreeDays[x+2] + "\n\n"
+                                send_message(recipient_id, ReturnString)
                             #ŚREDNIA
                             elif (message['message'].get('text').lower().split()[0] == "srednia") or (message['message'].get('text').lower().split()[0] == "średnia"):
                                 try:
