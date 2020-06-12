@@ -9,8 +9,8 @@ import json
 from py_librus_api import Librus
 
 app = Flask(__name__)
-ACCESS_TOKEN = 'EAADTxfZBqeScBAIM3ZBrHE3czy0MthGBje7bArvwHIEkZBDvvwe1IIBXoe8HMha0bC0KqUdM5YZCcRjhtU5zLEWT1gsRGTcfgriI4bpGPiGvZAkzG9RpvHxx2E8KNLbVJjanH5Yp85sofahFZAYIY56CVzc2MAUhMnZCvZCyt0bI51hdw4ptsKYH'
-VERIFY_TOKEN = 'TESTTOKEN'
+ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
+VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
 bot = Bot(ACCESS_TOKEN)
 
 mydb = mysql.connector.connect(
