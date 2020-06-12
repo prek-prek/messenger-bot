@@ -193,7 +193,7 @@ def receive_message():
                                         send_message(recipient_id, "Brak pracy domowej wczoraj")
                                     else:
                                         send_message(recipient_id, homework)
-                                elif("dzisiaj" in message['message'].get('text').lower().split()): #or (len(message['message'].get('text').lower().split())==2):
+                                elif("dzisiaj" in message['message'].get('text').lower().split()):
                                     homework = apiVulcan.getHomework(date.today(),clientCertificate)
                                     if(homework==""):
                                         send_message(recipient_id, "Brak pracy domowej na dzisiaj")
