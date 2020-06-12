@@ -69,7 +69,7 @@ def receive_message():
                         try:
                             #WIADOMOSC NIE TEKSTOWA
                             if message['message'].get('attachments'):
-                                send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
+                                send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany\n-szczesliwy numerek\n-dni wolne\n-srednia")
                             #SPRAWDZIANY
                             elif(message['message'].get('text').lower().split()[0] == "sprawdziany"):
                                 try:
@@ -157,7 +157,7 @@ def receive_message():
                                     send_message(recipient_id,"Błędna nazwa przedmiotu lub brak ocen")
                             #ZŁA KOMENDA
                             else:
-                                send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany")
+                                send_message(recipient_id, "Błędne polecenie!\nDostępne polecenia:\n-sprawdziany\n-szczesliwy numerek\n-dni wolne\n-srednia")
                         except Exception as e:
                             mycursor.execute("DELETE FROM `users` WHERE `users`.`recipient_id` = "+recipient_id)
                             mydb.commit()
