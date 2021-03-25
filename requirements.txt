@@ -25,7 +25,7 @@ pymessenger==0.0.7.0
 pyOpenSSL==19.1.0
 python-dateutil==2.8.1
 pytz==2020.1
-PyYAML==5.3.1
+PyYAML==5.4
 related==0.7.2
 requests==2.23.0
 requests-toolbelt==0.9.1
