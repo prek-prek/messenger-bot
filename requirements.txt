@@ -19,7 +19,7 @@ Jinja2==2.11.2
 librus-tricks==0.8.1
 MarkupSafe==1.1.1
 mysql-connector==2.2.9
-pipenv==2018.11.26
+pipenv==2022.1.8
 pycparser==2.20
 pymessenger==0.0.7.0
 pyOpenSSL==19.1.0
